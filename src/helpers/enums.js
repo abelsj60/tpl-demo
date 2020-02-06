@@ -14,7 +14,7 @@ export default {
   ],
   dealType: ["Hedge fund", "Fund of funds", "Private equity", "REIT"],
   lawFirm: ["Skadden", "Blue & Gold", "Case Street"],
-  lawsuits: ["none", "pending"],
+  lawsuits: ["No suits pending", "Suits pending"],
   partyIds: ["abc", "def", "ghi", "jkl", "mno"],
   partyNames: [
     { first: "Tom", last: "Jones" },

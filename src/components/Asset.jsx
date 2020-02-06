@@ -1,6 +1,6 @@
 import AssetItem from "./AssetItem.jsx";
 import DataBracket from "./DataBracket.jsx";
-// import DealInput from "./DealInput.jsx";
+import DealButton from "./DealButton.jsx";
 import { Link } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
@@ -17,20 +17,13 @@ const Container = styled.div`
     height: 2rem;
   }
 `;
-const DataRoomButton = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  width: 6.25rem;
-  border: none;
-  color: white;
-  background-color: blue;
-  height: 2rem;
-  font-size: 0.9rem;
-  text-decoration: none;
-  text-align: center;
-  align-self: center;
+// eslint-disable-next-line no-unused-vars
+const RestyledDealButton = styled(({ marginRight, ...rest }) => (
+  <DealButton {...rest} />
+))`
+  &:not(:last-child) {
+    margin-right: 0.5rem;
+  }
 `;
 
 export default function Asset(props) {
@@ -52,12 +45,12 @@ export default function Asset(props) {
         <AssetItem grow label="Jurisdiction" text={jurisdiction} />
         <AssetItem grow label="Current bid" text={currentBid.amount} />
       </DataBracket>
-      {/*<DealInput
-        id={`comps-${props.idx}`}
-        text="Add to comps"
-        type="checkbox"
-      />*/}
-      <DataRoomButton to={`/deal/${id}`}>Data room</DataRoomButton>
+      {props.owner && (
+        <RestyledDealButton marginRight to={`/deal/${id}/edit`}>
+          Edit
+        </RestyledDealButton>
+      )}
+      <RestyledDealButton to={`/deal/${id}`}>Data room</RestyledDealButton>
     </Container>
   );
 }

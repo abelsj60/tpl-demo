@@ -17,13 +17,13 @@ const party = vals => ({
   bidIds: []
 });
 const deal = (vals, person) => ({
-  id: vals.dealId,
   category: enums.dealType[vals.categoryIdx],
-  currentBid: "",
+  currentBid: { amount: "", bidId: "", partyId: "" },
+  id: vals.dealId,
   jurisdiction: enums.country[vals.jurisdictionIdx],
-  ownerId: person.id,
-  ownerFirst: person.first,
-  ownerLast: person.last,
+  ownerId: person && person.id,
+  ownerFirst: person && person.first,
+  ownerLast: person && person.last,
   minimumBid: 1000000,
   litigationStatus: enums.lawsuits[vals.litigationIdx],
   description: vals.description,

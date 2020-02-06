@@ -1,13 +1,16 @@
-import Asset from "./components/Asset.jsx";
+import buildData from "./data/buildData";
 import constants from "./helpers/constants";
 import createVariables from "./helpers/createVariables";
+import CreateDeal from "./components/CreateDeal.jsx";
+import Deal from "./components/Deal.jsx";
+import Deals from "./components/Deals.jsx";
+import EditDeal from "./components/EditDeal.jsx";
 import enums from "./helpers/enums";
 import Graf from "./components/Graf.jsx";
-import buildData from "./data/buildData";
 import { Link } from "react-router-dom";
-// import normalizer from "./helpers/normalizer";
+import MyDeals from "./components/MyDeals.jsx";
 import React, { Fragment, useState, useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
@@ -22,23 +25,6 @@ const GlobalStyle = createGlobalStyle`
     height: 100vh;
     margin: 0 8px;
   }
-`;
-const AssetHolder = styled.div`
-  flex: 1;
-  background-color: white;
-  margin: 10px;
-  overflow: auto;
-`;
-// const Filter = styled.div`
-//   flex: 1;
-//   height: ${p => p.default && "2.25rem"};
-//   width: ${p => p.default && "4rem"};
-//   background-color: ${p => (p.no % 2 === 0 ? "white" : "lightgrey")};
-// `;
-const ButtonHolder = styled.div`
-  display: flex;
-  margin: 10px 10px 15px;
-  height: ${p => p.default && "2.25rem"};
 `;
 const Footer = styled.footer`
   display: flex;
@@ -58,6 +44,10 @@ const RestyledLink = styled(({ addFlex, center, ...rest }) => (
   color: black;
   text-decoration: none;
   text-align: ${p => p.center && "center"};
+
+  &:not(:last-child) {
+    margin-right: 1rem;
+  }
 `;
 const Main = styled.main`
   flex: 1;
@@ -67,28 +57,16 @@ const Main = styled.main`
   // Required for silly flexbox browser bug.
   min-height: 0;
 `;
-const MarketHed = styled.h1`
-  font-size: 1.75rem;
-  margin: 0 10px;
-`;
-const NavContainer = styled.div`
-  flex: 0.25;
-  display: flex;
-`;
-const NewDealButton = styled.button`
-  margin: 0;
-  height: 2rem;
-  color: white;
-  background-color: blue;
-  border: none;
-`;
+const NavContainer = styled.div``;
 
 export default function App() {
-  const [userId, setUser] = useState("mno");
+  const [loading, setLoading] = useState(true);
+  const [userId] = useState("mno");
   const [parties, setParties] = useState([]);
   const [deals, setDeals] = useState([]);
   const [bids, setBids] = useState([]);
   const [myDeals, setMyDeals] = useState([]);
+  // const [mode, setMode] = useState("view");
 
   useEffect(() => {
     // Create dummy data on mount.
@@ -143,6 +121,7 @@ export default function App() {
 
     // Update my-deals for current user (now: default).
     setMyDeals(dealArr.filter(deal => userId === deal.ownerId));
+    setLoading(false);
   }, []);
 
   return (
@@ -167,47 +146,51 @@ export default function App() {
       </Header>
       <Main>
         <Switch>
-          <Route
-            exact
-            path={["/", "/deals"]}
-            render={() => (
-              <Fragment>
-                <MarketHed>Active</MarketHed>
-                <AssetHolder>
-                  {deals.map((deal, idx) => (
-                    <Asset idx={idx} deal={deal} key={idx} />
-                  ))}
-                </AssetHolder>
-              </Fragment>
-            )}
-          />
+          <Route exact path="/">
+            <Redirect to="/deals" />
+          </Route>
+          <Route path="/deals" render={() => <Deals deals={deals} />} />
           <Route
             path="/my-deals"
+            render={() => <MyDeals myDeals={myDeals} />}
+          />
+          <Route
+            exact
+            path="/deal/new"
             render={() => (
-              <Fragment>
-                <MarketHed>My deals</MarketHed>
-                <ButtonHolder>
-                  <NewDealButton>New deal</NewDealButton>
-                </ButtonHolder>
-                <AssetHolder>
-                  {myDeals.map((deal, idx) => (
-                    <Asset idx={idx} deal={deal} key={idx} />
-                  ))}
-                </AssetHolder>
-              </Fragment>
+              <CreateDeal
+                grow
+                deals={deals}
+                marginRight="1rem"
+                parties={parties}
+                setDeals={setDeals}
+                userId={userId}
+              />
             )}
           />
           <Route
             exact
             path="/deal/:id"
-            render={({ match }) => {
-              return (
-                <Fragment>
-                  <MarketHed>Data room for TK</MarketHed>
-                  <div>{match.params.id}</div>
-                </Fragment>
-              );
-            }}
+            render={() => (
+              <Deal
+                deals={deals}
+                loading={loading}
+                parties={parties}
+                userId={userId}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/deal/:id/edit"
+            render={() => (
+              <EditDeal
+                grow
+                deals={deals}
+                marginRight="1rem"
+                setDeals={setDeals}
+              />
+            )}
           />
         </Switch>
       </Main>
