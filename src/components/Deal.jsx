@@ -7,6 +7,10 @@ import React, { Fragment } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
+const RestyledAssetItem = styled(AssetItem)`
+  margin-top: 10px;
+  margin-left: 10px;
+`;
 const ButtonHolder = styled.div`
   display: flex;
 `;
@@ -77,13 +81,14 @@ export default function Deal(props) {
   return !loading && !!deal ? (
     <Fragment>
       <MarketHed>{dataRoomHed}</MarketHed>
+      <RestyledAssetItem
+        fontWeight="bold"
+        marginTop="10px"
+        marginLeft="10px"
+        label="Current bid"
+        text={currentBid.amount}
+      />
       <Container default idx={props.idx}>
-        <AssetItem
-          grow
-          bottomMargin={true}
-          label="Current bid"
-          text={currentBid.amount}
-        />
         <DataBracket grow row>
           <DataBracket grow>
             <AssetItem bottomMargin={true} label="Deal id" text={deal.id} />

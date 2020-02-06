@@ -15,7 +15,7 @@ const Form = styled.form`
 `;
 
 export default function DealForm(props) {
-  const { appData, data, formData, handleChange, handleForm } = props;
+  const { appData, data, handleChange, handleForm } = props;
 
   return (
     <Form onSubmit={handleForm}>
@@ -27,7 +27,7 @@ export default function DealForm(props) {
           name={cat.name}
           selectorData={cat.selectorData}
           startWith={appData[cat.name]}
-          value={formData[cat.name]}
+          value={data[cat.name]}
         />
       ))}
       <ButtonHolder>

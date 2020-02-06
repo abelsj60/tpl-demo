@@ -1,10 +1,10 @@
-import buildData from "./data/buildData";
+// import buildData from "./data/buildData";
 import constants from "./helpers/constants";
-import createVariables from "./helpers/createVariables";
-import CreateDeal from "./components/CreateDeal.jsx";
+// import CreateDeal from "./components/CreateDeal.jsx";
 import Deal from "./components/Deal.jsx";
+import DealForms from "./components/DealForms.jsx";
 import Deals from "./components/Deals.jsx";
-import EditDeal from "./components/EditDeal.jsx";
+// import EditDeal from "./components/EditDeal.jsx";
 import enums from "./helpers/enums";
 import Graf from "./components/Graf.jsx";
 import { Link } from "react-router-dom";
@@ -12,6 +12,7 @@ import MyDeals from "./components/MyDeals.jsx";
 import React, { Fragment, useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
+import TPLDataManager from "./data/TPLDataManager.js";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -70,8 +71,7 @@ export default function App() {
 
   useEffect(() => {
     // Create dummy data on mount.
-    const build = buildData(),
-      bidArr = [],
+    const bidArr = [],
       dealArr = [],
       // Set deal count for dummy data
       dealCount = 11;
@@ -79,17 +79,18 @@ export default function App() {
     let personCount = 0;
 
     // Build party object for all users (see enums).
-    const partyArr = enums.partyNames.map((person, idx) =>
-      build.party(createVariables(idx, person))
-    );
+    const partyArr = enums.partyNames.map((person, idx) => {
+      const TPLData = new TPLDataManager(idx, person);
+      return TPLData.buildParty();
+    });
 
     // Let's loop to create all deals (based on dealCount).
     for (let i = 0; i < dealCount; i++) {
       const person = partyArr[personCount]; // Convenient.
       // Build variable object for easy data/object creation.
-      const variables = createVariables(personCount);
-      const deal = build.deal(variables, person);
-      const bid = build.bid(variables, person, deal);
+      const TPLData = new TPLDataManager(personCount);
+      const deal = TPLData.buildDeal(person);
+      const bid = TPLData.buildBid(person, deal);
 
       // Update deal, person, and bid objects w/final data.
       deal.currentBid = {
@@ -158,8 +159,9 @@ export default function App() {
             exact
             path="/deal/new"
             render={() => (
-              <CreateDeal
+              <DealForms
                 grow
+                formCategory="new"
                 deals={deals}
                 marginRight="1rem"
                 parties={parties}
@@ -184,8 +186,9 @@ export default function App() {
             exact
             path="/deal/:id/edit"
             render={() => (
-              <EditDeal
+              <DealForms
                 grow
+                formCategory="edit"
                 deals={deals}
                 marginRight="1rem"
                 setDeals={setDeals}
