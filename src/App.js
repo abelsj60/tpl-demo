@@ -74,7 +74,7 @@ export default function App() {
     const bidArr = [],
       dealArr = [],
       // Set deal count for dummy data
-      dealCount = config.dealCount;
+      dealCount = config.dealCount >= 5 ? config.dealCount : 5;
     // Assign specific person to deals/bids to ensure consistency.
     let personCount = 0;
 
