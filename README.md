@@ -33,6 +33,12 @@ All the scripts can be found in the usual place:
 package.json
 ```
 
+The dev server should be running here:
+
+```
+http://localhost:1234/
+```
+
 ## Lint & Beautify
 
 This project's linted and beautified via ESLint and Prettier. The configs are here:
