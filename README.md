@@ -12,6 +12,8 @@ or
 yarn install
 ```
 
+## Bundle & Serve
+
 Then, Parcel will bundle the app and start up a server when you run this script:
 
 ```
@@ -24,32 +26,38 @@ Which, of course, can be found in the usual place:
 package.json
 ```
 
-This gets a little extra assistance from Babel, which has one special config option here:
+This project gets a little extra assistance from Babel, which can be configured here:
 
 ```
 .babelrc
 ```
 
-Now, we'll lint and prettify the code in your text editor via ESLint and Prettier. Their configs are in:
+## Lint & Beautify
+
+It's linted and beautified via ESLint and Prettier, configs here:
 
 ```
 ESLint: .eslintrc.json
 Prettier: .prettierrc
 ```
 
-The app will start bundling from here:
+## Code
+
+The app's entry point is here:
 
 ```
 /src/index.js
 ```
 
-And the React Components proper can be found here:
+Proper React Components, using hooks, can be found here:
 
 ```
 /src/App.jsx
 /src/components
 /src/components/styledPrimitives (for when a Styled Component begs for reuse).
 ```
+
+## Data
 
 Major data is stored and managed here:
 
@@ -70,6 +78,8 @@ A constants file with some additional data for configuration can be found here:
 ```
 /src/helpers
 ```
+
+## App config
 
 Finally, you can control how many deals are included in the app and the user via a config file:
 
