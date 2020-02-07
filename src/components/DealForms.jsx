@@ -2,7 +2,7 @@ import constants from "../helpers/constants.js";
 import DealForm from "./DealForm.jsx";
 import formDataForDisplay from "../data/formDataForDisplay";
 import cloneDeep from "lodash/cloneDeep";
-import MarketHed from "./MarketHed.jsx";
+import MarketHed from "./styledPrimitives/MarketHed.jsx";
 import React, { Fragment, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useHistory, useLocation, useParams } from "react-router-dom";

@@ -1,4 +1,4 @@
-import DealLink from "./DealLink.jsx";
+import DealLink from "./styledPrimitives/DealLink.jsx";
 import InputAndLabel from "./InputAndLabel.jsx";
 import React from "react";
 import styled from "styled-components";

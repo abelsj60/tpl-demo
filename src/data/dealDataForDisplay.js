@@ -33,6 +33,10 @@ export default (deal, party) => {
       {
         label: "SIC",
         text: deal.sic
+      },
+      {
+        label: "Status",
+        text: deal.status
       }
     ],
     party: [
