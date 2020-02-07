@@ -49,7 +49,7 @@ The app's entry point is here:
 Proper React Components can be found here:
 
 ```
-/src/App.jsx
+/src/App.js
 /src/components
 /src/components/styledPrimitives
 (styledPrimitives? Good when a Styled Component begs for reuse...)
