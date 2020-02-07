@@ -7,7 +7,7 @@ This is a sample app of a marketplace for alternative investments. It consists o
 - A simple list of deals (all deals, and the user's deals).
 - Deal Rooms. Every deal gets a deal room to transact business.
 
-[](/tpl-home.png);
+[home page](/tpl-home.png)
 
 ## Getting Started
 
