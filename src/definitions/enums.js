@@ -23,5 +23,6 @@ export default {
     { first: "Sarah", last: "Ko" },
     { first: "Jack", last: "Frost" }
   ],
+  status: ["Auction", "Due Diligence"],
   type: ["Individual", "Corporation", "Advisor"]
 };

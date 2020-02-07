@@ -4,7 +4,7 @@ import DealRoom from "./components/DealRoom.jsx";
 import DealForms from "./components/DealForms.jsx";
 import Deals from "./components/Deals.jsx";
 import enums from "./definitions/enums";
-import Graf from "./components/Graf.jsx";
+import Graf from "./components/styledPrimitives/Graf.jsx";
 import cloneDeep from "lodash/cloneDeep";
 import { Link } from "react-router-dom";
 import React, { Fragment, useState, useEffect } from "react";
@@ -60,10 +60,10 @@ const NavContainer = styled.div``;
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [userId] = useState("mno");
+  const [userId] = useState(config.userId);
   const [parties, setParties] = useState([]);
   const [deals, setDeals] = useState([]);
-  const [bids, setBids] = useState([]);
+  const [_bids, setBids] = useState([]);
   const [myDeals, setMyDeals] = useState([]);
   const location = useLocation();
   const isMyDeals = location.pathname.includes("my-deals");

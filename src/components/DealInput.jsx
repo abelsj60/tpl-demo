@@ -1,4 +1,4 @@
-import DataLabel from "./DataLabel.jsx";
+import DataLabel from "./styledPrimitives/DataLabel.jsx";
 import React from "react";
 import styled from "styled-components";
 

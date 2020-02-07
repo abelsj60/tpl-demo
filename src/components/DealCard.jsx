@@ -1,7 +1,7 @@
 import DealItem from "./DealItem.jsx";
-import DataBracket from "./DataBracket.jsx";
+import DataBracket from "./styledPrimitives/DataBracket.jsx";
 import dealCardDataForDisplay from "../data/dealCardDataForDisplay";
-import DealLink from "./DealLink.jsx";
+import DealLink from "./styledPrimitives/DealLink.jsx";
 import React from "react";
 import styled from "styled-components";
 
@@ -10,8 +10,10 @@ const Container = styled.div`
   display: flex;
   overflow: hidden;
   padding: 20px;
-  background-color: ${p =>
-    p.default && (p.idx % 2 === 0 ? "aliceblue" : "lightblue")};
+
+  &:nth-child(even) {
+    background-color: lightblue;
+  }
 
   @media (min-width: 800px) {
     height: 2rem;
@@ -34,9 +36,17 @@ export default function Asset(props) {
   return (
     <Container default idx={props.idx}>
       <DataBracket grow row>
-        {displayData.map((field, idx) => (
-          <DealItem grow key={idx} label={field.label} text={field.text} />
-        ))}
+        {displayData.map((field, idx) => {
+          console.log("rerender", idx);
+          return (
+            <DealItem
+              grow
+              key={field.label}
+              label={field.label}
+              text={field.text}
+            />
+          );
+        })}
       </DataBracket>
       {isMyDeals && (
         <RestyledDealLink marginRight to={`/deal/${id}/edit`}>

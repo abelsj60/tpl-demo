@@ -1,6 +1,6 @@
-import DataBracket from "./DataBracket.jsx";
-import DataLabel from "./DataLabel.jsx";
-import Graf from "./Graf.jsx";
+import DataBracket from "./styledPrimitives/DataBracket.jsx";
+import DataLabel from "./styledPrimitives/DataLabel.jsx";
+import Graf from "./styledPrimitives/Graf.jsx";
 import React from "react";
 
 export default function DealItem(props) {

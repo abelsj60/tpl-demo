@@ -1,11 +1,11 @@
-import ButtonHolder from "./ButtonHolder.jsx";
+import ButtonHolder from "./styledPrimitives/ButtonHolder.jsx";
 import constants from "../helpers/constants.js";
 import DealCard from "./DealCard.jsx";
-import DealCardHolder from "./DealCardHolder.jsx";
-import DealLink from "./DealLink.jsx";
-import Graf from "./Graf.jsx";
+import DealCardHolder from "./styledPrimitives/DealCardHolder.jsx";
+import DealLink from "./styledPrimitives/DealLink.jsx";
+import Graf from "./styledPrimitives/Graf.jsx";
 import React, { Fragment } from "react";
-import MarketHed from "./MarketHed.jsx";
+import MarketHed from "./styledPrimitives/MarketHed.jsx";
 import styled from "styled-components";
 
 const RestyledGraf = styled(Graf)`
@@ -33,7 +33,7 @@ export default function Deals(props) {
       <DealCardHolder grow>
         {data.map(
           (deal, idx) =>
-            deal.status !== "due diligence" && (
+            (isMyDeals || (!isMyDeals && deal.status === "Auction")) && (
               <DealCard isMyDeals={isMyDeals} idx={idx} deal={deal} key={idx} />
             )
         )}

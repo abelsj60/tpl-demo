@@ -1,19 +1,17 @@
+import ButtonHolder from "./styledPrimitives/ButtonHolder.jsx";
 import DealItem from "./DealItem.jsx";
 import constants from "../helpers/constants.js";
-import DataBracket from "./DataBracket.jsx";
+import DataBracket from "./styledPrimitives/DataBracket.jsx";
 import dealDataForDisplay from "../data/dealDataForDisplay.js";
-import Graf from "./Graf.jsx";
+import Graf from "./styledPrimitives/Graf.jsx";
 import cloneDeep from "lodash/cloneDeep";
 import { Link, Redirect } from "react-router-dom";
-import MarketHed from "./MarketHed.jsx";
+import MarketHed from "./styledPrimitives/MarketHed.jsx";
 import React, { Fragment, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import TPLDataManager from "../data/TPLDataManager.js";
 
-const ButtonHolder = styled.div`
-  display: flex;
-`;
 const ColumnHed = styled.h3`
   margin-top: 0;
 `;
@@ -128,6 +126,67 @@ export default function Deal(props) {
     userId !== deal.sellerId
       ? constants.dealRoomHed(deal)
       : constants.myDealRoomHed(deal);
+  const handleAcceptButton = event => {
+    event.preventDefault();
+
+    const newDeals = cloneDeep(deals);
+    const newParties = cloneDeep(parties);
+    const dealIndex = newDeals.map(deal => deal.id).indexOf(id);
+    const partyIndex = newParties.map(party => party.id).indexOf(userId);
+    const newDeal = newDeals[dealIndex];
+    const newParty = newParties[partyIndex];
+    newDeal.buyerId = userId;
+    // Should update props in bid history
+    newDeal.currentBid.accepted = true;
+    newDeal.currentBid.acceptedDate = new Date();
+    newDeal.status = "Due Diligence";
+    newParty.closedDeals.push(newDeal.id);
+    const newMyDeals = cloneDeep(newDeals);
+
+    newDeals[dealIndex] = newDeal;
+    newParties[partyIndex] = newParty;
+
+    setDeals(newDeals);
+    setParties(newParties);
+    setMyDeals(newMyDeals.filter(deal => userId === deal.sellerId));
+  };
+  const handleBidChange = event => {
+    const TPLData = new TPLDataManager(0, party, true);
+    const newBid = TPLData.buildBid(userId, deal, event.target.value);
+
+    setBid(newBid);
+  };
+  const handleBidSubmit = event => {
+    event.preventDefault();
+
+    const newDeals = cloneDeep(deals);
+    const newParties = cloneDeep(parties);
+    const dealIndex = newDeals.map(deal => deal.id).indexOf(id);
+    const partyIndex = newParties.map(party => party.id).indexOf(userId);
+    const newParty = newParties[partyIndex];
+    const newDeal = newDeals[dealIndex];
+    newDeal.bidHistory.push(bid);
+    // newDeal.status = "due diligence";
+    newParty.bidIds.push(bid.id);
+    // newParty.closedDeals.push(newDeal.id);
+
+    if (parseInt(event.target[0].value) > parseInt(deal.currentBid.amount)) {
+      setOutcome("newLeader");
+      // bid.accepted = true;
+      // newDeal.buyerId = userId;
+      newDeal.currentBid = bid;
+    } else {
+      setOutcome("tooLittle");
+      setBid(0);
+      event.target[0].value = 0;
+    }
+
+    newDeals[dealIndex] = newDeal;
+    newParties[partyIndex] = newParty;
+
+    setDeals(newDeals);
+    setParties(newParties);
+  };
 
   return !loading ? (
     <Fragment>
@@ -142,91 +201,16 @@ export default function Deal(props) {
         {userId === deal.sellerId &&
         deal.currentBid.amount > 0 &&
         !deal.currentBid.accepted ? (
-          <DealRoomButton
-            onClick={() => {
-              // event.preventDefault();
-
-              const newDeals = cloneDeep(deals);
-              const newParties = cloneDeep(parties);
-              const dealIndex = newDeals.map(deal => deal.id).indexOf(id);
-              const partyIndex = newParties
-                .map(party => party.id)
-                .indexOf(userId);
-              const newDeal = newDeals[dealIndex];
-              const newParty = newParties[partyIndex];
-              newDeal.buyerId = userId;
-              // Should update props in bid history
-              newDeal.currentBid.accepted = true;
-              newDeal.currentBid.acceptedDate = new Date();
-              newDeal.status = "Due Diligence";
-              newParty.closedDeals.push(newDeal.id);
-              const newMyDeals = cloneDeep(newDeals);
-
-              newDeals[dealIndex] = newDeal;
-              newParties[partyIndex] = newParty;
-
-              setDeals(newDeals);
-              setParties(newParties);
-              setMyDeals(newMyDeals.filter(deal => userId === deal.sellerId));
-            }}
-          >
-            Accept
-          </DealRoomButton>
+          <DealRoomButton onClick={handleAcceptButton}>Accept</DealRoomButton>
         ) : (
           deal.currentBid.amount > 0 &&
           !deal.currentBid.accepted &&
           outcome !== "win" && (
-            <Form
-              onSubmit={event => {
-                event.preventDefault();
-
-                const newDeals = cloneDeep(deals);
-                const newParties = cloneDeep(parties);
-                const dealIndex = newDeals.map(deal => deal.id).indexOf(id);
-                const partyIndex = newParties
-                  .map(party => party.id)
-                  .indexOf(userId);
-                const newParty = newParties[partyIndex];
-                const newDeal = newDeals[dealIndex];
-                newDeal.bidHistory.push(bid);
-                // newDeal.status = "due diligence";
-                newParty.bidIds.push(bid.id);
-                // newParty.closedDeals.push(newDeal.id);
-
-                if (
-                  parseInt(event.target[0].value) >
-                  parseInt(deal.currentBid.amount)
-                ) {
-                  setOutcome("newLeader");
-                  // bid.accepted = true;
-                  // newDeal.buyerId = userId;
-                  newDeal.currentBid = bid;
-                } else {
-                  setOutcome("tooLittle");
-                  setBid(0);
-                  event.target[0].value = 0;
-                }
-
-                newDeals[dealIndex] = newDeal;
-                newParties[partyIndex] = newParty;
-
-                setDeals(newDeals);
-                setParties(newParties);
-              }}
-            >
+            <Form onSubmit={handleBidSubmit}>
               <Input
                 placeholder="Ready to raise?"
                 type="number"
-                onChange={event => {
-                  const TPLData = new TPLDataManager(0, party, true);
-                  const newBid = TPLData.buildBid(
-                    userId,
-                    deal,
-                    event.target.value
-                  );
-
-                  setBid(newBid);
-                }}
+                onChange={handleBidChange}
               />
               <DealRoomButton value={bid} type="submit">
                 Bid

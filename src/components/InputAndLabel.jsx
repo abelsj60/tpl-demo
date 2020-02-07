@@ -1,4 +1,4 @@
-import Graf from "./Graf.jsx";
+import Graf from "./styledPrimitives/Graf.jsx";
 import React, { Fragment } from "react";
 import styled from "styled-components";
 
