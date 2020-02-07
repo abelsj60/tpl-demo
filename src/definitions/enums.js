@@ -23,5 +23,5 @@ export default {
     { first: "Sarah", last: "Ko" },
     { first: "Jack", last: "Frost" }
   ],
-  type: ["person", "corporation", "advisor"]
+  type: ["Individual", "Corporation", "Advisor"]
 };

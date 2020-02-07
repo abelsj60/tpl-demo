@@ -1,16 +1,12 @@
-// import buildData from "./data/buildData";
 import constants from "./helpers/constants";
-// import CreateDeal from "./components/CreateDeal.jsx";
 import Deal from "./components/Deal.jsx";
 import DealForms from "./components/DealForms.jsx";
 import Deals from "./components/Deals.jsx";
-// import EditDeal from "./components/EditDeal.jsx";
-import enums from "./helpers/enums";
+import enums from "./definitions/enums";
 import Graf from "./components/Graf.jsx";
 import { Link } from "react-router-dom";
-import MyDeals from "./components/MyDeals.jsx";
 import React, { Fragment, useState, useEffect } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import TPLDataManager from "./data/TPLDataManager.js";
 
@@ -67,7 +63,9 @@ export default function App() {
   const [deals, setDeals] = useState([]);
   const [bids, setBids] = useState([]);
   const [myDeals, setMyDeals] = useState([]);
-  // const [mode, setMode] = useState("view");
+  const location = useLocation();
+  const isMyDeals = location.pathname.includes("my-deals");
+  const dealsData = !isMyDeals ? deals : myDeals;
 
   useEffect(() => {
     // Create dummy data on mount.
@@ -107,10 +105,6 @@ export default function App() {
       person.bidIds.push(bid.id);
       dealArr.push(deal);
       bidArr.push(bid);
-      // setState...
-      setParties(partyArr);
-      setDeals(dealArr);
-      setBids(bidArr);
 
       // Increment personCount so as to ensure consistency.
       if (personCount < 4) {
@@ -120,7 +114,13 @@ export default function App() {
       }
     }
 
-    // Update my-deals for current user (now: default).
+    // Let's set the various states (and sort deals by date).
+    setBids(bidArr);
+    setDeals(dealArr.sort((a, b) => b.date - a.date));
+    setParties(partyArr);
+
+    // Update my-deals for current user (currently always Jack Frost).
+    // Note, should be sorted by date b/c we're working off dealArr.
     setMyDeals(dealArr.filter(deal => userId === deal.ownerId));
     setLoading(false);
   }, []);
@@ -146,56 +146,50 @@ export default function App() {
         </NavContainer>
       </Header>
       <Main>
-        <Switch>
-          <Route exact path="/">
-            <Redirect to="/deals" />
-          </Route>
-          <Route path="/deals" render={() => <Deals deals={deals} />} />
-          <Route
-            path="/my-deals"
-            render={() => <MyDeals myDeals={myDeals} />}
-          />
-          <Route
-            exact
-            path="/deal/new"
-            render={() => (
-              <DealForms
-                grow
-                formCategory="new"
-                deals={deals}
-                marginRight="1rem"
-                parties={parties}
-                setDeals={setDeals}
-                userId={userId}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/deal/:id"
-            render={() => (
-              <Deal
-                deals={deals}
-                loading={loading}
-                parties={parties}
-                userId={userId}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/deal/:id/edit"
-            render={() => (
-              <DealForms
-                grow
-                formCategory="edit"
-                deals={deals}
-                marginRight="1rem"
-                setDeals={setDeals}
-              />
-            )}
-          />
-        </Switch>
+        {!loading ? (
+          <Switch>
+            <Route
+              exact
+              path={["/", "/deals", "/my-deals"]}
+              render={() => <Deals data={dealsData} isMyDeals={isMyDeals} />}
+            />
+            <Route
+              exact
+              path={["/deal/new", "/deal/:id/edit"]}
+              render={() => (
+                <DealForms
+                  grow
+                  deals={deals}
+                  marginRight="1rem"
+                  parties={parties}
+                  setDeals={setDeals}
+                  setMyDeals={setMyDeals}
+                  userId={userId}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/deal/:id"
+              render={() => (
+                <Deal
+                  deals={deals}
+                  loading={loading}
+                  parties={parties}
+                  userId={userId}
+                />
+              )}
+            />
+            <Route
+              path="/notfound"
+              render={() => (
+                <Graf style={{ marginLeft: "10px" }}>Not found</Graf>
+              )}
+            />
+          </Switch>
+        ) : (
+          <div style={{ marginLeft: "10px" }}>Loading...</div>
+        )}
       </Main>
       <Footer>
         <Graf>{constants.support}</Graf>

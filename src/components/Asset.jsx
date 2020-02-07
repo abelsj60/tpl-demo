@@ -1,7 +1,6 @@
 import AssetItem from "./AssetItem.jsx";
 import DataBracket from "./DataBracket.jsx";
 import DealButton from "./DealButton.jsx";
-import { Link } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
 
@@ -27,25 +26,33 @@ const RestyledDealButton = styled(({ marginRight, ...rest }) => (
 `;
 
 export default function Asset(props) {
+  const { deal, isMyDeals } = props;
   const {
     category,
     currentBid,
+    date,
     id,
     jurisdiction,
     ownerFirst,
     ownerLast
-  } = props.deal;
+  } = deal;
+  const dateString = date.toLocaleDateString("en-US");
 
   return (
     <Container default idx={props.idx}>
       <DataBracket grow row>
         <AssetItem grow label="Deal ID" text={id} />
+        <AssetItem grow label="Date" text={dateString} />
         <AssetItem grow label="Asset class" text={category} />
         <AssetItem grow label="Offeror" text={`${ownerFirst} ${ownerLast}`} />
         <AssetItem grow label="Jurisdiction" text={jurisdiction} />
-        <AssetItem grow label="Current bid" text={currentBid.amount} />
+        <AssetItem
+          grow
+          label="Current bid"
+          text={`$${currentBid.amount} million`}
+        />
       </DataBracket>
-      {props.owner && (
+      {isMyDeals && (
         <RestyledDealButton marginRight to={`/deal/${id}/edit`}>
           Edit
         </RestyledDealButton>

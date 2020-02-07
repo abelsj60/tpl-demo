@@ -1,7 +1,8 @@
-import enums from "./enums.js";
+import enums from "../definitions/enums.js";
 
 export default {
   copyright: "TPL, Inc. All rights reserved.",
+  dealMarketHed: "Deal Market",
   editDealHed: deal => `Edit your '${deal.category}' deal`,
   formData: [
     { name: "category", nickname: "Category", selectorData: enums.dealType },
@@ -20,6 +21,7 @@ export default {
     { name: "sic", nickname: "SIC", selectorData: [] }
   ],
   motto: "Alternative equities",
+  myDealsHed: "My Deals",
   name: "Triple Point Liquidity",
   navLinks: [
     { text: "Deals", url: "/" },
