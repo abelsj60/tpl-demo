@@ -1,5 +1,7 @@
-import DealForm from "./DealForm.jsx";
 import constants from "../helpers/constants.js";
+import DealForm from "./DealForm.jsx";
+import formDataForDisplay from "../data/formDataForDisplay";
+import cloneDeep from "lodash/cloneDeep";
 import MarketHed from "./MarketHed.jsx";
 import React, { Fragment, useState } from "react";
 import { Redirect } from "react-router-dom";
@@ -19,43 +21,60 @@ const Container = styled.div`
 
 export default function DealForms(props) {
   const { id } = useParams();
-  const { deals, setDeals, setMyDeals, parties, userId } = props;
+  const { deals, setDeals, setMyDeals, setParties, parties, userId } = props;
   const location = useLocation();
   let history = useHistory();
   const formCategory = location.pathname.includes("new") ? "new" : "edit";
-  const newDeals = deals.slice(0).map(deal => Object.assign({}, deal));
-  let deal, dealHed, dealIndex, handleFormSubmit, personIndex, person, TPLData;
+  const newDeals = cloneDeep(deals);
+  // const newParties = cloneDeep(parties);
+  let newDeal,
+    newParties,
+    dealHed,
+    dealIndex,
+    handleFormSubmit,
+    personIndex,
+    newPerson,
+    TPLData;
 
   switch (formCategory) {
     case "edit":
-      dealIndex = deals.map(deal => deal.id).indexOf(id);
-      deal = deals[dealIndex];
+      dealIndex = newDeals.map(deal => deal.id).indexOf(id);
+      newDeal = newDeals[dealIndex];
 
       // A quick-n-dirty redirect for non-existent deal IDs. It happens
       // a lot b/c of dynamic dummy data. It obliterates deal IDs.
-      if (typeof deal === "undefined") {
+      if (typeof newDeal === "undefined") {
         return <Redirect to="/notfound" />;
       }
 
-      dealHed = constants.editDealHed(deal);
+      dealHed = constants.editDealHed(newDeal);
       handleFormSubmit = () => {
         event.preventDefault();
-        newDeals[dealIndex] = { ...deal, ...formData };
+
+        newDeals[dealIndex] = { ...newDeal, ...formData };
         setDeals(newDeals);
+
         history.push("/my-deals");
       };
       break;
     case "new":
-      personIndex = parties.map(party => party.id).indexOf(userId);
-      person = parties[personIndex];
-      TPLData = new TPLDataManager(0, person, true);
-      deal = TPLData.buildDeal(person);
-      dealHed = constants.newDealHed(person);
+      newParties = cloneDeep(parties);
+      personIndex = newParties.map(party => party.id).indexOf(userId);
+      newPerson = newParties[personIndex];
+      TPLData = new TPLDataManager(0, newPerson, true);
+      newDeal = TPLData.buildDeal(newPerson);
+      dealHed = constants.newDealHed(newPerson);
       handleFormSubmit = () => {
         event.preventDefault();
-        newDeals.push({ ...deal, ...formData });
+
+        newDeals.push({ ...newDeal, ...formData });
+        newPerson.dealIds.push(newDeal.id);
+        newParties[personIndex] = newPerson;
+
         setDeals(newDeals.sort((a, b) => b.date - a.date));
-        setMyDeals(newDeals.filter(deal => userId === deal.ownerId));
+        setMyDeals(newDeals.filter(deal => userId === deal.sellerId));
+        setParties(newParties);
+
         history.push("/my-deals");
       };
       break;
@@ -70,7 +89,7 @@ export default function DealForms(props) {
     litigationStatus,
     description,
     sic
-  } = deal;
+  } = newDeal;
 
   /* The Rule of Hooks:
     The React team says the following use of useState() violate the
@@ -99,8 +118,8 @@ export default function DealForms(props) {
       <MarketHed>{dealHed}</MarketHed>
       <Container default>
         <DealForm
-          appData={deal}
-          data={constants.formData}
+          appData={newDeal}
+          data={formDataForDisplay}
           handleChange={handleFormChange}
           handleForm={handleFormSubmit}
         />

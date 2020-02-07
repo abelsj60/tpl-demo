@@ -9,4 +9,8 @@ export default styled.div`
   margin-bottom: ${p => p.bottomMargin && "15px"};
   margin-left: ${p => p.marginLeft && p.marginLeft};
   margin-right: ${p => p.marginRight && p.marginRight};
+
+  &:not(:last-child) {
+    ${p => p.columnSeparator && "margin-right: 1.25rem;"}
+  }
 `;

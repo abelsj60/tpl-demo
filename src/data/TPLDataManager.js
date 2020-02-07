@@ -38,49 +38,57 @@ export default class TPLDataManager {
     this.zip = chance.zip();
   }
 
-  buildBid(person, deal) {
+  buildBid(person, deal, bid) {
     return {
-      id: this.bidId,
+      accepted: false,
+      acceptedDate: "",
+      amount: !bid ? enums.bidValues[this.bidIdx] : parseInt(bid),
+      // Date of deal creation or now if override is on.
+      date: this.date,
       dealId: deal.id,
-      ownerId: person.id,
-      amount: enums.bidValues[this.bidIdx]
+      id: this.bidId,
+      // Quick bug fix: Can be an obj or the userId:
+      ownerId: person.id ? person.id : person
     };
   }
 
   buildDeal(person) {
     return {
+      bidHistory: [],
+      buyerId: "",
       category: enums.dealType[this.categoryIdx],
-      currentBid: { amount: "0", bidId: "", partyId: "" },
+      currentBid: { amount: 0, bidId: "", partyId: "" },
+      date: this.date,
+      description: this.description,
       id: this.dealId,
       jurisdiction: enums.country[this.jurisdictionIdx],
-      ownerId: person && person.id,
-      ownerFirst: person && person.first,
-      ownerLast: person && person.last,
-      minimumBid: 1000000,
       litigationStatus: enums.lawsuits[this.litigationIdx],
-      description: this.description,
-      date: this.date,
-      bidHistory: [],
+      minimumBid: 1000000,
+      sellerId: person && person.id,
+      sellerFirst: person && person.first,
+      sellerLast: person && person.last,
+      status: "Auction",
       sic: this.sic
     };
   }
 
   buildParty() {
     return {
-      id: enums.partyIds[this.partyIdx],
-      first: this.first,
-      last: this.last,
-      address: this.address,
-      state: this.state,
-      city: this.city,
-      zip: this.zip,
-      email: `${this.last}@gmmaail.com`,
-      type: enums.type[this.typeIdx],
-      lawFirm: enums.lawFirm[this.lawFirmIdx],
-      bank: enums.bank[this.bankIdx],
       accountant: enums.accountant[this.accountantIdx],
+      address: this.address,
+      bank: enums.bank[this.bankIdx],
+      bidIds: [],
+      city: this.city,
+      closedDeals: [],
       dealIds: [],
-      bidIds: []
+      email: `${this.last}@gmmaail.com`,
+      first: this.first,
+      id: enums.partyIds[this.partyIdx],
+      last: this.last,
+      lawFirm: enums.lawFirm[this.lawFirmIdx],
+      state: this.state,
+      type: enums.type[this.typeIdx],
+      zip: this.zip
     };
   }
 }

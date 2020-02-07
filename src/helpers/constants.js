@@ -1,28 +1,13 @@
-import enums from "../definitions/enums.js";
-
 export default {
-  copyright: "TPL, Inc. All rights reserved.",
+  copyright: "2020. TPL, Inc. All rights reserved.",
   dealMarketHed: "Deal Market",
+  dealRoomHed: deal =>
+    `Deal Room for ${deal.sellerFirst} ${deal.sellerLast}'s '${deal.category}' deal`,
   editDealHed: deal => `Edit your '${deal.category}' deal`,
-  formData: [
-    { name: "category", nickname: "Category", selectorData: enums.dealType },
-    {
-      name: "jurisdiction",
-      nickname: "Jurisdiction",
-      selectorData: enums.country
-    },
-    { name: "minimumBid", nickname: "Minimum bid", selectorData: [] },
-    {
-      name: "litigationStatus",
-      nickname: "Litigation status",
-      selectorData: enums.lawsuits
-    },
-    { name: "description", nickname: "Description", selectorData: [] },
-    { name: "sic", nickname: "SIC", selectorData: [] }
-  ],
   motto: "Alternative equities",
   myDealsHed: "My Deals",
-  name: "Triple Point Liquidity",
+  myDealRoomHed: deal => `This is your '${deal.category}' deal`,
+  name: "Triple Point",
   navLinks: [
     { text: "Deals", url: "/" },
     { text: "My deals", url: "/my-deals" }
@@ -30,5 +15,5 @@ export default {
   newDealHed: person =>
     // Quick fix. This keeps the Hed in check when loading on a new deal.
     `Hi${person ? " " + person.first : ""}, let's make a deal.`,
-  support: "help@tpl.com"
+  support: "help@tpl.comnet"
 };

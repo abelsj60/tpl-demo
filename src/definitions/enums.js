@@ -1,7 +1,7 @@
 export default {
   accountant: ["Anderson", "Ernst", "McGladdis"],
   bank: ["Merrill", "Goldman", "Behr"],
-  bidValues: [1, 1.5, 2, 2.5, 4, 5],
+  bidValues: [1000000, 1500000, 2000000, 2500000, 4000000, 5000000],
   country: [
     "UK",
     "US",

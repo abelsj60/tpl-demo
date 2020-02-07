@@ -1,11 +1,9 @@
-import ButtonHolder from "./ButtonHolder.jsx";
-import DealButton from "./DealButton.jsx";
+import DealLink from "./DealLink.jsx";
 import InputAndLabel from "./InputAndLabel.jsx";
 import React from "react";
 import styled from "styled-components";
 
-const RestyledDealButton = styled(DealButton).attrs({ as: "input" })`
-  flex: 1;
+const RestyledDealButton = styled(DealLink).attrs({ as: "input" })`
   margin-right: ${p => p.marginRight && ".5rem"};
 `;
 const Form = styled.form`
@@ -30,9 +28,7 @@ export default function DealForm(props) {
           value={data[cat.name]}
         />
       ))}
-      <ButtonHolder>
-        <RestyledDealButton type="submit" value="Submit"></RestyledDealButton>
-      </ButtonHolder>
+      <RestyledDealButton type="submit" value="Submit" />
     </Form>
   );
 }

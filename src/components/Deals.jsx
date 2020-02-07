@@ -1,8 +1,8 @@
-import Asset from "./Asset.jsx";
-import AssetHolder from "./AssetHolder.jsx";
 import ButtonHolder from "./ButtonHolder.jsx";
 import constants from "../helpers/constants.js";
-import DealButton from "./DealButton.jsx";
+import DealCard from "./DealCard.jsx";
+import DealCardHolder from "./DealCardHolder.jsx";
+import DealLink from "./DealLink.jsx";
 import Graf from "./Graf.jsx";
 import React, { Fragment } from "react";
 import MarketHed from "./MarketHed.jsx";
@@ -27,14 +27,17 @@ export default function Deals(props) {
       <RestyledGraf>Active deals: {data.length}</RestyledGraf>
       {isMyDeals && (
         <RestyledButtonHolder>
-          <DealButton to="/deal/new">New deal</DealButton>
+          <DealLink to="/deal/new">New deal</DealLink>
         </RestyledButtonHolder>
       )}
-      <AssetHolder grow>
-        {data.map((deal, idx) => (
-          <Asset isMyDeals={isMyDeals} idx={idx} deal={deal} key={idx} />
-        ))}
-      </AssetHolder>
+      <DealCardHolder grow>
+        {data.map(
+          (deal, idx) =>
+            deal.status !== "due diligence" && (
+              <DealCard isMyDeals={isMyDeals} idx={idx} deal={deal} key={idx} />
+            )
+        )}
+      </DealCardHolder>
     </Fragment>
   );
 }
