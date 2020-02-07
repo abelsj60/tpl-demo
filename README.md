@@ -7,7 +7,7 @@ This is a sample app of a marketplace for alternative investments. It consists o
 - A simple list of deals (all deals, and the user's deals).
 - Deal Rooms. Every deal gets a deal room to transact business.
 
-Note: Deal Rooms are context sensitive. Deal owners will see an "Accept" button, while everyone else will see a "Bid" button.
+Deal Rooms are context sensitive. Deal owners will see an "Accept" button, everyone else will see a "Bid" button.
 
 ![home page](/tpl-home.png)
 
