@@ -3,6 +3,7 @@ export default {
   dealMarketHed: "Deal Market",
   dealRoomHed: deal =>
     `Deal Room for ${deal.sellerFirst} ${deal.sellerLast}'s '${deal.category}' deal`,
+  dealSummary: isMyDeals => (isMyDeals ? "Total deals" : "Active deals"),
   editDealHed: deal => `Edit your '${deal.category}' deal`,
   motto: "Alternative equities",
   myDealsHed: "My Deals",

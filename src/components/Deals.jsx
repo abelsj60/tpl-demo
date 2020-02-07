@@ -18,13 +18,14 @@ const RestyledButtonHolder = styled(ButtonHolder)`
 `;
 
 export default function Deals(props) {
-  const { dealMarketHed, myDealsHed } = constants;
+  const { dealMarketHed, dealSummary, myDealsHed } = constants;
   const { data, isMyDeals } = props;
+  const dealSummaryHed = dealSummary(isMyDeals);
 
   return (
     <Fragment>
       <MarketHed>{!isMyDeals ? dealMarketHed : myDealsHed}</MarketHed>
-      <RestyledGraf>Active deals: {data.length}</RestyledGraf>
+      <RestyledGraf>{`${dealSummaryHed}: ${data.length}`}</RestyledGraf>
       {isMyDeals && (
         <RestyledButtonHolder>
           <DealLink to="/deal/new">New deal</DealLink>
