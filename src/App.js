@@ -1,9 +1,11 @@
+import config from "../config.json";
 import constants from "./helpers/constants";
-import Deal from "./components/Deal.jsx";
+import DealRoom from "./components/DealRoom.jsx";
 import DealForms from "./components/DealForms.jsx";
 import Deals from "./components/Deals.jsx";
 import enums from "./definitions/enums";
 import Graf from "./components/Graf.jsx";
+import cloneDeep from "lodash/cloneDeep";
 import { Link } from "react-router-dom";
 import React, { Fragment, useState, useEffect } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
@@ -72,7 +74,7 @@ export default function App() {
     const bidArr = [],
       dealArr = [],
       // Set deal count for dummy data
-      dealCount = 11;
+      dealCount = config.dealCount;
     // Assign specific person to deals/bids to ensure consistency.
     let personCount = 0;
 
@@ -90,16 +92,20 @@ export default function App() {
       const deal = TPLData.buildDeal(person);
       const bid = TPLData.buildBid(person, deal);
 
-      // Update deal, person, and bid objects w/final data.
+      // Update deal, person, and bid objects w/final creation data.
       deal.currentBid = {
+        accepted: false,
         amount: bid.amount,
         bidId: bid.id,
-        partyId: person.id
+        date: bid.date,
+        sellerId: person.id
       };
       deal.bidHistory.push({
+        accepted: false,
         amount: bid.amount,
         bidId: bid.id,
-        partyId: person.id
+        date: bid.date,
+        sellerId: person.id
       });
       person.dealIds.push(deal.id);
       person.bidIds.push(bid.id);
@@ -121,7 +127,8 @@ export default function App() {
 
     // Update my-deals for current user (currently always Jack Frost).
     // Note, should be sorted by date b/c we're working off dealArr.
-    setMyDeals(dealArr.filter(deal => userId === deal.ownerId));
+    const newMyDeals = cloneDeep(dealArr);
+    setMyDeals(newMyDeals.filter(deal => userId === deal.sellerId));
     setLoading(false);
   }, []);
 
@@ -163,6 +170,7 @@ export default function App() {
                   marginRight="1rem"
                   parties={parties}
                   setDeals={setDeals}
+                  setParties={setParties}
                   setMyDeals={setMyDeals}
                   userId={userId}
                 />
@@ -170,16 +178,20 @@ export default function App() {
             />
             <Route
               exact
-              path="/deal/:id"
+              path="/dealroom/:id"
               render={() => (
-                <Deal
+                <DealRoom
                   deals={deals}
                   loading={loading}
                   parties={parties}
+                  setDeals={setDeals}
+                  setMyDeals={setMyDeals}
+                  setParties={setParties}
                   userId={userId}
                 />
               )}
             />
+            <Route exact path="/bid/:id" render={() => <div>Make a bid</div>} />
             <Route
               path="/notfound"
               render={() => (
