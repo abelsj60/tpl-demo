@@ -108,6 +108,12 @@ export default function Deal(props) {
   }
 
   const party = parties.filter(party => party.id === deal.sellerId)[0];
+  /* The Rule of Hooks:
+    The React team says the following use of useState() violate the
+    Rule of Hooks. I don't think it does b/c the early return sends the
+    user to the not-found route, meaning we never come back through 
+    here in a way that perverts the sequential order of hooks. 
+    So, I've disabled the rule for the next line only. */
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [bid, setBid] = useState({
     accepted: false,
@@ -166,14 +172,10 @@ export default function Deal(props) {
     const newParty = newParties[partyIndex];
     const newDeal = newDeals[dealIndex];
     newDeal.bidHistory.push(bid);
-    // newDeal.status = "due diligence";
     newParty.bidIds.push(bid.id);
-    // newParty.closedDeals.push(newDeal.id);
 
     if (parseInt(event.target[0].value) > parseInt(deal.currentBid.amount)) {
       setOutcome("newLeader");
-      // bid.accepted = true;
-      // newDeal.buyerId = userId;
       newDeal.currentBid = bid;
     } else {
       setOutcome("tooLittle");
@@ -221,7 +223,9 @@ export default function Deal(props) {
         {outcome === "tooLittle" && (
           <RestyledGraf>Too low! Try again?</RestyledGraf>
         )}
-        {/*outcome === "win" && <RestyledGraf>All yours!</RestyledGraf>*/}
+        {outcome === "newLeader" && (
+          <RestyledGraf>You are the new leader!</RestyledGraf>
+        )}
       </Dashboard>
       <Container default idx={props.idx}>
         <DataBracket grow row>

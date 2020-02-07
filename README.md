@@ -1,5 +1,14 @@
 # TPL Demo
 
+## Overview
+
+This is a sample app of a marketplace for alternative investments. It consists of two main views:
+
+- A simple list of deals (all deals, and the user's deals).
+- Deal Rooms. Every deal gets a deal room to transact business.
+
+## Getting Started
+
 To get started, just run:
 
 ```
