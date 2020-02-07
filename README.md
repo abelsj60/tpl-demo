@@ -14,27 +14,21 @@ yarn install
 
 ## Bundle & Serve
 
-Then, Parcel will bundle the app and start up a server when you run this script:
+Parcel will bundle the app and start up a server when you run this script:
 
 ```
 npm run dev
 ```
 
-Which, of course, can be found in the usual place:
+All the scripts can be found in the usual place:
 
 ```
 package.json
 ```
 
-This project gets a little extra assistance from Babel, which can be configured here:
-
-```
-.babelrc
-```
-
 ## Lint & Beautify
 
-It's linted and beautified via ESLint and Prettier, configs here:
+This project's linted and beautified via ESLint and Prettier, configs here:
 
 ```
 ESLint: .eslintrc.json
@@ -49,7 +43,7 @@ The app's entry point is here:
 /src/index.js
 ```
 
-Proper React Components, using hooks, can be found here:
+Proper React Components can be found here:
 
 ```
 /src/App.jsx
@@ -67,7 +61,7 @@ Major data is stored and managed here:
 
 The `TPLDataManager` builds deals, parties, and bids, while the other files manage smaller data objects and functions to help keep everything clean, simple, and tight.
 
-Speaking of which, a poor man's JavaScript file of enums can be found in definitions. It helps with data assembly and management:
+Some poor man's enums (in plane JS) can be found here:
 
 ```
 /src/definitions
@@ -81,10 +75,10 @@ A constants file with some additional data for configuration can be found here:
 
 ## App config
 
-Finally, you can control how many deals are included in the app and the user via a config file:
+You can control how many deals are included in the app and the active user by updating:
 
 ```
 config.json
-```
 
-See enums.partyId for a list of preconfigured, index-sensitive userIds.
+(See enums.partyId for a list of preconfigured, index-sensitive userIds)
+```
