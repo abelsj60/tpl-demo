@@ -1,8 +1,8 @@
 import Chance from "chance";
-import enums from "../helpers/enums";
+import enums from "../definitions/enums";
 
 export default class TPLDataManager {
-  constructor(idx, person) {
+  constructor(idx, person, overrideNow) {
     const chance = new Chance();
 
     this.accountantIdx = chance.integer({ min: 0, max: 2 });
@@ -15,16 +15,19 @@ export default class TPLDataManager {
     });
     this.categoryIdx = chance.integer({ min: 0, max: 3 });
     this.city = chance.city();
-    this.date = chance.date({ string: true, year: 2019 });
+    // Use the override to make the date match the now.
+    this.date = !overrideNow
+      ? new Date(chance.date({ year: 2019, american: false }))
+      : new Date();
     this.dealId = chance.string({
       length: 5,
       pool: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     });
     this.description = chance.sentence({ words: 10 });
-    // Only needed when building partyArr (empty string irrelevant)
+    // Only needed when building a party, empty string irrelevant.
     this.first = typeof person !== "undefined" ? person.first : "";
     this.jurisdictionIdx = chance.integer({ min: 0, max: 7 });
-    // Only needed when building partyArr (empty string irrelevant)
+    // Only needed when building a party, empty string irrelevant.
     this.last = typeof person !== "undefined" ? person.last : "";
     this.lawFirmIdx = chance.integer({ min: 0, max: 2 });
     this.litigationIdx = chance.integer({ min: 0, max: 1 });
@@ -40,14 +43,14 @@ export default class TPLDataManager {
       id: this.bidId,
       dealId: deal.id,
       ownerId: person.id,
-      amount: `$${enums.bidValues[this.bidIdx]} million`
+      amount: enums.bidValues[this.bidIdx]
     };
   }
 
   buildDeal(person) {
     return {
       category: enums.dealType[this.categoryIdx],
-      currentBid: { amount: "", bidId: "", partyId: "" },
+      currentBid: { amount: "0", bidId: "", partyId: "" },
       id: this.dealId,
       jurisdiction: enums.country[this.jurisdictionIdx],
       ownerId: person && person.id,

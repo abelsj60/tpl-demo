@@ -1,7 +1,7 @@
 import AssetItem from "./AssetItem.jsx";
 import DataBracket from "./DataBracket.jsx";
 import Graf from "./Graf.jsx";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import MarketHed from "./MarketHed.jsx";
 import React, { Fragment } from "react";
 import { useParams } from "react-router-dom";
@@ -52,6 +52,11 @@ export default function Deal(props) {
   const { deals, loading, parties, userId } = props;
 
   const deal = deals.filter(deal => deal.id === id)[0];
+
+  if (typeof deal === "undefined") {
+    return <Redirect to="/notfound" />;
+  }
+
   const party = parties.filter(party => party.id === deal.ownerId)[0];
   const dataRoomHed = `Data room for ${deal.ownerFirst} ${deal.ownerLast}'s '${deal.category}' deal`;
 
@@ -77,8 +82,9 @@ export default function Deal(props) {
     bank,
     accountant
   } = party;
+  const dateString = date.toLocaleDateString("en-US");
 
-  return !loading && !!deal ? (
+  return !loading && deal.id ? (
     <Fragment>
       <MarketHed>{dataRoomHed}</MarketHed>
       <RestyledAssetItem
@@ -86,7 +92,7 @@ export default function Deal(props) {
         marginTop="10px"
         marginLeft="10px"
         label="Current bid"
-        text={currentBid.amount}
+        text={`$${currentBid.amount} million`}
       />
       <Container default idx={props.idx}>
         <DataBracket grow row>
@@ -97,7 +103,7 @@ export default function Deal(props) {
               label="Asset class"
               text={category}
             />
-            <AssetItem bottomMargin={true} label="Date" text={date} />
+            <AssetItem bottomMargin={true} label="Date" text={dateString} />
             <AssetItem
               bottomMargin={true}
               label="Offeror"
