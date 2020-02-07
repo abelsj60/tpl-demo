@@ -1,10 +1,15 @@
 import Chance from "chance";
 import enums from "../definitions/enums";
 
+// This class dynamically builds dummy data for this demo app.
+// The class relies on Chance.js to add some randomness to it.
+
 export default class TPLDataManager {
   constructor(idx, person, overrideNow) {
     const chance = new Chance();
 
+    // These properties will be relied on by the class's methods
+    // when building data objects.
     this.accountantIdx = chance.integer({ min: 0, max: 2 });
     this.address = chance.address();
     this.bankIdx = chance.integer({ min: 0, max: 2 });

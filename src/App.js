@@ -130,7 +130,7 @@ export default function App() {
     const newMyDeals = cloneDeep(dealArr);
     setMyDeals(newMyDeals.filter(deal => userId === deal.sellerId));
     setLoading(false);
-  }, []);
+  }, []); // Only run this effect when mounting...
 
   return (
     <Fragment>

@@ -25,8 +25,7 @@ export default function DealForms(props) {
   const location = useLocation();
   let history = useHistory();
   const formCategory = location.pathname.includes("new") ? "new" : "edit";
-  const newDeals = cloneDeep(deals);
-  // const newParties = cloneDeep(parties);
+  const newDeals = cloneDeep(deals); // Keep it clean with clones.
   let newDeal,
     newParties,
     dealHed,
@@ -51,31 +50,37 @@ export default function DealForms(props) {
       handleFormSubmit = () => {
         event.preventDefault();
 
+        // Let's rebuild our deals w/fresh clone data
         newDeals[dealIndex] = { ...newDeal, ...formData };
         setDeals(newDeals);
+        setMyDeals(newDeals.filter(deal => userId === deal.sellerId));
 
-        history.push("/my-deals");
+        history.push("/my-deals"); // Done. Go somewhere more interesting.
       };
       break;
     case "new":
-      newParties = cloneDeep(parties);
+      // Lot's to update:
+      newParties = cloneDeep(parties); // Keep it clean with clones.
       personIndex = newParties.map(party => party.id).indexOf(userId);
-      newPerson = newParties[personIndex];
-      TPLData = new TPLDataManager(0, newPerson, true);
-      newDeal = TPLData.buildDeal(newPerson);
+      newPerson = newParties[personIndex]; // Get the user!
+      TPLData = new TPLDataManager(0, newPerson, true); // true = Date.now()...
+      newDeal = TPLData.buildDeal(newPerson); // Build a new deal
       dealHed = constants.newDealHed(newPerson);
       handleFormSubmit = () => {
         event.preventDefault();
 
+        // Let's rebuild our deals w/fresh clone data
         newDeals.push({ ...newDeal, ...formData });
+        // Add the new deal id to the person/party
         newPerson.dealIds.push(newDeal.id);
         newParties[personIndex] = newPerson;
 
+        // Set, reset, and sort...
         setDeals(newDeals.sort((a, b) => b.date - a.date));
         setMyDeals(newDeals.filter(deal => userId === deal.sellerId));
         setParties(newParties);
 
-        history.push("/my-deals");
+        history.push("/my-deals"); // Done. Go somewhere more interesting.
       };
       break;
     default:

@@ -36,17 +36,14 @@ export default function Asset(props) {
   return (
     <Container default idx={props.idx}>
       <DataBracket grow row>
-        {displayData.map((field, idx) => {
-          console.log("rerender", idx);
-          return (
-            <DealItem
-              grow
-              key={field.label}
-              label={field.label}
-              text={field.text}
-            />
-          );
-        })}
+        {displayData.map(field => (
+          <DealItem
+            grow
+            key={field.label}
+            label={field.label}
+            text={field.text}
+          />
+        ))}
       </DataBracket>
       {isMyDeals && (
         <RestyledDealLink marginRight to={`/deal/${id}/edit`}>

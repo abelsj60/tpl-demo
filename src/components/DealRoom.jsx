@@ -135,20 +135,20 @@ export default function Deal(props) {
   const handleAcceptButton = event => {
     event.preventDefault();
 
-    const newDeals = cloneDeep(deals);
-    const newParties = cloneDeep(parties);
+    const newDeals = cloneDeep(deals); // Keep it clean with clones.
+    const newParties = cloneDeep(parties); // Keep it clean with clones.
+    // Now, we'll get the relevant deal and party
     const dealIndex = newDeals.map(deal => deal.id).indexOf(id);
     const partyIndex = newParties.map(party => party.id).indexOf(userId);
     const newDeal = newDeals[dealIndex];
     const newParty = newParties[partyIndex];
-    newDeal.buyerId = userId;
-    // Should update props in bid history
-    newDeal.currentBid.accepted = true;
-    newDeal.currentBid.acceptedDate = new Date();
+    // Let's record what happened by updating deal and party data.
+    newDeal.buyerId = userId; // We've got a buyer, save him or her.
+    newDeal.currentBid.accepted = true; // Should update props in bid history
     newDeal.status = "Due Diligence";
     newParty.closedDeals.push(newDeal.id);
-    const newMyDeals = cloneDeep(newDeals);
-
+    const newMyDeals = cloneDeep(newDeals); // Keep it clean with clones.
+    // Attach our new values to our larger data object.
     newDeals[dealIndex] = newDeal;
     newParties[partyIndex] = newParty;
 
@@ -165,27 +165,35 @@ export default function Deal(props) {
   const handleBidSubmit = event => {
     event.preventDefault();
 
-    const newDeals = cloneDeep(deals);
-    const newParties = cloneDeep(parties);
+    // A lot of this logic mirrors the accept button. Schedule a refactor...
+    const newDeals = cloneDeep(deals); // Keep it clean with clones.
+    const newParties = cloneDeep(parties); // Keep it clean with clones.
     const dealIndex = newDeals.map(deal => deal.id).indexOf(id);
     const partyIndex = newParties.map(party => party.id).indexOf(userId);
     const newParty = newParties[partyIndex];
     const newDeal = newDeals[dealIndex];
     newDeal.bidHistory.push(bid);
     newParty.bidIds.push(bid.id);
+    // The minimum value will either be the current bid, or, if none, the minimumBid value
+    const minimumDealValue =
+      parseInt(deal.currentBid.amount) > 0
+        ? parseInt(deal.currentBid.amount)
+        : parseInt(deal.minimumBid);
 
-    if (parseInt(event.target[0].value) > parseInt(deal.currentBid.amount)) {
+    if (parseInt(event.target[0].value) > minimumDealValue) {
       setOutcome("newLeader");
       newDeal.currentBid = bid;
     } else {
       setOutcome("tooLittle");
-      setBid(0);
+      setBid(0); // Resetting the form.
       event.target[0].value = 0;
     }
 
+    // Attached our new values...
     newDeals[dealIndex] = newDeal;
     newParties[partyIndex] = newParty;
 
+    // Save them to state....
     setDeals(newDeals);
     setParties(newParties);
   };
@@ -198,14 +206,22 @@ export default function Deal(props) {
           fontWeight="bold"
           marginRight="1.25rem"
           label="Current bid"
-          text={`$${deal.currentBid.amount.toLocaleString()}`}
+          text={`$${parseInt(deal.currentBid.amount).toLocaleString()}`}
         />
+        {deal.currentBid.amount === 0 && (
+          <RestyledAssetItem
+            fontWeight="bold"
+            marginRight="1.25rem"
+            label="Minimum bid"
+            text={`$${parseInt(deal.minimumBid).toLocaleString()}`}
+          />
+        )}
         {userId === deal.sellerId &&
-        deal.currentBid.amount > 0 &&
+        parseInt(deal.currentBid.amount) > 0 &&
         !deal.currentBid.accepted ? (
           <DealRoomButton onClick={handleAcceptButton}>Accept</DealRoomButton>
         ) : (
-          deal.currentBid.amount > 0 &&
+          parseInt(deal.currentBid.amount) > 0 &&
           !deal.currentBid.accepted &&
           outcome !== "win" && (
             <Form onSubmit={handleBidSubmit}>

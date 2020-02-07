@@ -13,7 +13,7 @@ export default {
     { text: "My deals", url: "/my-deals" }
   ],
   newDealHed: person =>
-    // Quick fix. This keeps the Hed in check when loading on a new deal.
+    // Quick fix. The ternary keeps the Hed in check when loading on a new deal.
     `Hi${person ? " " + person.first : ""}, let's make a deal.`,
   support: "help@tpl.comnet"
 };
