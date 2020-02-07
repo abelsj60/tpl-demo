@@ -33,7 +33,7 @@ All the scripts can be found in the usual place:
 package.json
 ```
 
-The dev server should be running here:
+The development server should be running here:
 
 ```
 http://localhost:1234/
