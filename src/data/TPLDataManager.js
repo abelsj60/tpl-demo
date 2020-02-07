@@ -41,7 +41,6 @@ export default class TPLDataManager {
   buildBid(person, deal, bid) {
     return {
       accepted: false,
-      acceptedDate: "",
       amount: !bid ? enums.bidValues[this.bidIdx] : parseInt(bid),
       // Date of deal creation or now if override is on.
       date: this.date,

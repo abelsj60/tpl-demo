@@ -3,12 +3,6 @@
 To get started, just run:
 
 ```
-npm install
-```
-
-or
-
-```
 yarn install
 ```
 
@@ -28,7 +22,7 @@ package.json
 
 ## Lint & Beautify
 
-This project's linted and beautified via ESLint and Prettier, configs here:
+This project's linted and beautified via ESLint and Prettier. The configs are here:
 
 ```
 ESLint: .eslintrc.json
@@ -48,7 +42,8 @@ Proper React Components can be found here:
 ```
 /src/App.jsx
 /src/components
-/src/components/styledPrimitives (for when a Styled Component begs for reuse).
+/src/components/styledPrimitives
+(styledPrimitives? Good when a Styled Component begs for reuse...)
 ```
 
 ## Data
@@ -61,7 +56,7 @@ Major data is stored and managed here:
 
 The `TPLDataManager` builds deals, parties, and bids, while the other files manage smaller data objects and functions to help keep everything clean, simple, and tight.
 
-Some poor man's enums (in plane JS) can be found here:
+Some poor man's enums (in plain JS) can be found here:
 
 ```
 /src/definitions
@@ -80,5 +75,5 @@ You can control how many deals are included in the app and the active user by up
 ```
 config.json
 
-(See enums.partyId for a list of preconfigured, index-sensitive userIds)
+(See enums.partyId for a list of preconfigured, index-sensitive userIds.)
 ```
