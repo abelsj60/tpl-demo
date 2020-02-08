@@ -21,11 +21,14 @@ export default function Deals(props) {
   const { dealMarketHed, dealSummary, myDealsHed } = constants;
   const { data, isMyDeals } = props;
   const dealSummaryHed = dealSummary(isMyDeals);
+  const dealCount = isMyDeals
+    ? data.length
+    : data.filter(deal => deal.status === "Auction").length;
 
   return (
     <Fragment>
       <MarketHed>{!isMyDeals ? dealMarketHed : myDealsHed}</MarketHed>
-      <RestyledGraf>{`${dealSummaryHed}: ${data.length}`}</RestyledGraf>
+      <RestyledGraf>{`${dealSummaryHed}: ${dealCount}`}</RestyledGraf>
       {isMyDeals && (
         <RestyledButtonHolder>
           <DealLink to="/deal/new">New deal</DealLink>

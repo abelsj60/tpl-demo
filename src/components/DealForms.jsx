@@ -52,8 +52,10 @@ export default function DealForms(props) {
 
         // Let's rebuild our deals w/fresh clone data
         newDeals[dealIndex] = { ...newDeal, ...formData };
+        const newMyDeals = cloneDeep(newDeals); // Keep it clean with clones.
+
         setDeals(newDeals);
-        setMyDeals(newDeals.filter(deal => userId === deal.sellerId));
+        setMyDeals(newMyDeals.filter(deal => userId === deal.sellerId));
 
         history.push("/my-deals"); // Done. Go somewhere more interesting.
       };
@@ -69,15 +71,18 @@ export default function DealForms(props) {
       handleFormSubmit = event => {
         event.preventDefault();
 
-        // Let's rebuild our deals w/fresh clone data
+        // Let's add our new deal to our cloned array of deals.
         newDeals.push({ ...newDeal, ...formData });
-        // Add the new deal id to the person/party
+        // Sort the cloned array so newMyDeals is sorted, too.
+        newDeals.sort((a, b) => b.date - a.date);
+        const newMyDeals = cloneDeep(newDeals); // Keep it clean with clones.
+        // Add the new deal id to the person/party.
         newPerson.dealIds.push(newDeal.id);
         newParties[personIndex] = newPerson;
 
-        // Set, reset, and sort...
-        setDeals(newDeals.sort((a, b) => b.date - a.date));
-        setMyDeals(newDeals.filter(deal => userId === deal.sellerId));
+        // Set, reset, sort...
+        setDeals(newDeals);
+        setMyDeals(newMyDeals.filter(deal => userId === deal.sellerId));
         setParties(newParties);
 
         history.push("/my-deals"); // Done. Go somewhere more interesting.

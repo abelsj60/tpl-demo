@@ -63,6 +63,8 @@ export default function App() {
   const [userId] = useState(config.userId);
   const [parties, setParties] = useState([]);
   const [deals, setDeals] = useState([]);
+  // Don't worry about this error, value's unused.
+  // eslint-disable-next-line no-unused-vars
   const [_bids, setBids] = useState([]);
   const [myDeals, setMyDeals] = useState([]);
   const location = useLocation();
@@ -136,9 +138,11 @@ export default function App() {
     <Fragment>
       <GlobalStyle />
       <Header>
-        <RestyledLink addFlex={true} to="/">
-          {constants.name}
-        </RestyledLink>
+        <div>
+          <RestyledLink addFlex={true} to="/">
+            {constants.name}
+          </RestyledLink>
+        </div>
         <NavContainer>
           {constants.navLinks.map(link => (
             <RestyledLink

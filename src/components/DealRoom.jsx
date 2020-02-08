@@ -147,10 +147,10 @@ export default function Deal(props) {
     newDeal.currentBid.accepted = true; // Should update props in bid history
     newDeal.status = "Due Diligence";
     newParty.closedDeals.push(newDeal.id);
-    const newMyDeals = cloneDeep(newDeals); // Keep it clean with clones.
     // Attach our new values to our larger data object.
     newDeals[dealIndex] = newDeal;
     newParties[partyIndex] = newParty;
+    const newMyDeals = cloneDeep(newDeals); // Keep it clean with clones.
 
     setDeals(newDeals);
     setParties(newParties);
