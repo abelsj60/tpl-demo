@@ -47,7 +47,7 @@ export default function DealForms(props) {
       }
 
       dealHed = constants.editDealHed(newDeal);
-      handleFormSubmit = () => {
+      handleFormSubmit = event => {
         event.preventDefault();
 
         // Let's rebuild our deals w/fresh clone data
@@ -66,7 +66,7 @@ export default function DealForms(props) {
       TPLData = new TPLDataManager(0, newPerson, true); // true = Date.now()...
       newDeal = TPLData.buildDeal(newPerson); // Build a new deal
       dealHed = constants.newDealHed(newPerson);
-      handleFormSubmit = () => {
+      handleFormSubmit = event => {
         event.preventDefault();
 
         // Let's rebuild our deals w/fresh clone data
