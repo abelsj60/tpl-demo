@@ -134,6 +134,8 @@ export default function DealRoom(props) {
     userId !== deal.sellerId
       ? constants.dealRoomHed(deal)
       : constants.myDealRoomHed(deal);
+  // The current winner shouldn't be asked to bid until he's outbid!
+  const currentWinner = deal.currentBid.ownerId === userId;
   const handleAcceptButton = event => {
     event.preventDefault();
 
@@ -229,14 +231,18 @@ export default function DealRoom(props) {
             text={`$${parseInt(deal.minimumBid).toLocaleString()}`}
           />
         )}
-        {userId === deal.sellerId &&
+        {// This is the user's deal, the current bid is > 0, and the bid isn't accepted
+        userId === deal.sellerId &&
         parseInt(deal.currentBid.amount) > 0 &&
         !deal.currentBid.accepted ? (
           <DealRoomButton onClick={handleAcceptButton}>Accept</DealRoomButton>
         ) : (
+          // This isn't the current winner, the current bid is > 0,
+          // the bid isn't accepted, and the outcome isn't 'new winner!'
+          !currentWinner &&
           parseInt(deal.currentBid.amount) > 0 &&
           !deal.currentBid.accepted &&
-          outcome !== "win" && (
+          outcome !== "newLeader" && (
             <Form onSubmit={handleBidSubmit}>
               <Input
                 placeholder="Ready to raise?"
@@ -254,6 +260,12 @@ export default function DealRoom(props) {
         )}
         {outcome === "newLeader" && (
           <RestyledGraf>You are the new leader!</RestyledGraf>
+        )}
+        {outcome !== "newLeader" && currentWinner && (
+          <RestyledGraf>You are the leader!</RestyledGraf>
+        )}
+        {deal.status === "Due Diligence" && (
+          <RestyledGraf>Accepted! Time for review.</RestyledGraf>
         )}
       </Dashboard>
       <Container default idx={props.idx}>

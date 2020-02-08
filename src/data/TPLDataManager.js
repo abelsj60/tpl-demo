@@ -61,7 +61,13 @@ export default class TPLDataManager {
       bidHistory: [],
       buyerId: "",
       category: enums.dealType[this.categoryIdx],
-      currentBid: { amount: 0, bidId: "", partyId: "" },
+      currentBid: {
+        accepted: false,
+        amount: 0,
+        bidId: "",
+        date: "",
+        ownerId: ""
+      },
       date: this.date,
       description: this.description,
       id: this.dealId,
