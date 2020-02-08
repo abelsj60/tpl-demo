@@ -133,8 +133,6 @@ export default function App() {
     setLoading(false);
   }, []); // Only run this effect when mounting...
 
-  console.log("bids:", bids);
-
   return (
     <Fragment>
       <GlobalStyle />

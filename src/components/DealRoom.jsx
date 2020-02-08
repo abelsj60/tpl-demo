@@ -76,7 +76,7 @@ const Input = styled.input`
 const RestyledAssetItem = styled(DealItem)`
   width: 5rem;
   padding-right: 1.25rem;
-  border-right: 1px solid black;
+  border-right: ${p => !p.noBorder && "1px solid black"};
 `;
 const RestyledDealLink = styled(DealLink)`
   align-self: center;
@@ -222,6 +222,7 @@ export default function DealRoom(props) {
         />
         {deal.currentBid.amount === 0 && (
           <RestyledAssetItem
+            noBorder
             fontWeight="bold"
             marginRight="1.25rem"
             label="Minimum bid"
