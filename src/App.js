@@ -63,9 +63,8 @@ export default function App() {
   const [userId] = useState(config.userId);
   const [parties, setParties] = useState([]);
   const [deals, setDeals] = useState([]);
-  // Don't worry about this error, value's unused.
   // eslint-disable-next-line no-unused-vars
-  const [_bids, setBids] = useState([]);
+  const [bids, setBids] = useState([]);
   const [myDeals, setMyDeals] = useState([]);
   const location = useLocation();
   const isMyDeals = location.pathname.includes("my-deals");
@@ -134,6 +133,8 @@ export default function App() {
     setLoading(false);
   }, []); // Only run this effect when mounting...
 
+  console.log("bids:", bids);
+
   return (
     <Fragment>
       <GlobalStyle />
@@ -188,6 +189,8 @@ export default function App() {
                   deals={deals}
                   loading={loading}
                   parties={parties}
+                  bids={bids}
+                  setBids={setBids}
                   setDeals={setDeals}
                   setMyDeals={setMyDeals}
                   setParties={setParties}

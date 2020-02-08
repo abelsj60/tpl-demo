@@ -89,12 +89,14 @@ const RestyledGraf = styled(Graf)`
   font-size: 1.25rem;
 `;
 
-export default function Deal(props) {
+export default function DealRoom(props) {
   const { id } = useParams();
   const {
+    bids,
     deals,
     loading,
     parties,
+    setBids,
     setDeals,
     setMyDeals,
     setParties,
@@ -137,21 +139,27 @@ export default function Deal(props) {
 
     const newDeals = cloneDeep(deals); // Keep it clean with clones.
     const newParties = cloneDeep(parties); // Keep it clean with clones.
+    const newBids = cloneDeep(bids); // Keep it clean with clones.
     // Now, we'll get the relevant deal and party
     const dealIndex = newDeals.map(deal => deal.id).indexOf(id);
+    const bidIndex = newBids.map(bid => bid.id).indexOf(deal.currentBid.bidId);
     const partyIndex = newParties.map(party => party.id).indexOf(userId);
     const newDeal = newDeals[dealIndex];
     const newParty = newParties[partyIndex];
+    const updatedBid = newBids[bidIndex];
     // Let's record what happened by updating deal and party data.
     newDeal.buyerId = userId; // We've got a buyer, save him or her.
     newDeal.currentBid.accepted = true; // Should update props in bid history
     newDeal.status = "Due Diligence";
     newParty.closedDeals.push(newDeal.id);
+    updatedBid.accepted = true;
     // Attach our new values to our larger data object.
     newDeals[dealIndex] = newDeal;
     newParties[partyIndex] = newParty;
+    newBids[bidIndex] = updatedBid;
     const newMyDeals = cloneDeep(newDeals); // Keep it clean with clones.
 
+    setBids(newBids);
     setDeals(newDeals);
     setParties(newParties);
     setMyDeals(newMyDeals.filter(deal => userId === deal.sellerId));
@@ -183,6 +191,10 @@ export default function Deal(props) {
     if (parseInt(event.target[0].value) > minimumDealValue) {
       setOutcome("newLeader");
       newDeal.currentBid = bid;
+      const newBids = cloneDeep(bids); // Keep it clean with clones.
+      newBids.push(bid);
+      setBids(newBids);
+      event.target[0].value = "";
     } else {
       setOutcome("tooLittle");
       setBid(0); // Resetting the form.
