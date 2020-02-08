@@ -92,22 +92,20 @@ export default function App() {
       const TPLData = new TPLDataManager(personCount);
       const deal = TPLData.buildDeal(person);
       const bid = TPLData.buildBid(person, deal);
-
-      // Update deal, person, and bid objects w/final creation data.
-      deal.currentBid = {
+      // Let's make things easy and create a new bid object.
+      // It's separate to prevent it from being a reference
+      // to the existing bid object...
+      const mockBid = {
         accepted: false,
         amount: bid.amount,
-        bidId: bid.id,
         date: bid.date,
-        sellerId: person.id
+        dealId: deal.id,
+        id: bid.id,
+        ownerId: bid.ownerId
       };
-      deal.bidHistory.push({
-        accepted: false,
-        amount: bid.amount,
-        bidId: bid.id,
-        date: bid.date,
-        sellerId: person.id
-      });
+      // Update deal, person, and bid objects w/final creation data.
+      deal.currentBid = mockBid;
+      deal.bidHistory.push(mockBid);
       person.dealIds.push(deal.id);
       person.bidIds.push(bid.id);
       dealArr.push(deal);

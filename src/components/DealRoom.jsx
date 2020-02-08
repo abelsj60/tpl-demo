@@ -144,7 +144,7 @@ export default function DealRoom(props) {
     const newBids = cloneDeep(bids); // Keep it clean with clones.
     // Now, we'll get the relevant deal and party
     const dealIndex = newDeals.map(deal => deal.id).indexOf(id);
-    const bidIndex = newBids.map(bid => bid.id).indexOf(deal.currentBid.bidId);
+    const bidIndex = newBids.map(bid => bid.id).indexOf(deal.currentBid.id);
     const partyIndex = newParties.map(party => party.id).indexOf(userId);
     const newDeal = newDeals[dealIndex];
     const newParty = newParties[partyIndex];
