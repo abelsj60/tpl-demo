@@ -196,7 +196,6 @@ export default function App() {
               )}
             />
             <Route
-              path="/notfound"
               render={() => (
                 <Graf style={{ marginLeft: "10px" }}>Not found</Graf>
               )}
