@@ -13,7 +13,13 @@ Deal Rooms are context sensitive. Deal owners will see an "Accept" button, every
 
 ## Getting Started
 
-To get started, just run:
+To get started, clone the repo:
+
+```
+git clone https://github.com/abelsj60/tpl-demo.git
+```
+
+And run:
 
 ```
 yarn install
@@ -21,19 +27,13 @@ yarn install
 
 ## Bundle & Serve
 
-Parcel will bundle the app and start up a server when you run this script:
+Parcel will bundle the app and start up a server when you run this script in your favorite terminal:
 
 ```
 npm run dev
 ```
 
-All the scripts can be found in the usual place:
-
-```
-package.json
-```
-
-The development server should be running here:
+The development server should be running here once you start up:
 
 ```
 http://localhost:1234/
