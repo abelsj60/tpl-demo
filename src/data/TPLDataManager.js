@@ -44,13 +44,18 @@ export default class TPLDataManager {
   }
 
   buildBid(person, deal, bid) {
-    const chance = new Chance();
     const personId = person.id ? person.id : person;
-    const validBidOwnerIds = enums.partyIds.filter(id => id !== personId);
-    const bidOwnerIdx = chance.integer({
-      min: 0,
-      max: validBidOwnerIds.length - 1
-    });
+    let bidOwner;
+
+    if (!bid) {
+      const chance = new Chance();
+      const validBidOwnerIds = enums.partyIds.filter(id => id !== personId);
+      const bidOwnerIdx = chance.integer({
+        min: 0,
+        max: validBidOwnerIds.length - 1
+      });
+      bidOwner = validBidOwnerIds[bidOwnerIdx];
+    }
 
     return {
       accepted: false,
@@ -60,7 +65,7 @@ export default class TPLDataManager {
       dealId: deal.id,
       id: this.bidId,
       // Quick bug fix: Can be an obj or the userId:
-      ownerId: !bid ? validBidOwnerIds[bidOwnerIdx] : personId
+      ownerId: !bid ? bidOwner : personId
     };
   }
 
