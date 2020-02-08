@@ -200,7 +200,7 @@ export default function DealRoom(props) {
     } else {
       setOutcome("tooLittle");
       setBid(0); // Resetting the form.
-      event.target[0].value = 0;
+      event.target[0].value = "";
     }
 
     // Attached our new values...
