@@ -195,7 +195,6 @@ export default function App() {
                 />
               )}
             />
-            <Route exact path="/bid/:id" render={() => <div>Make a bid</div>} />
             <Route
               path="/notfound"
               render={() => (
