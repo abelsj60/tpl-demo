@@ -34,6 +34,7 @@ export default function Deals(props) {
       <DealCardHolder grow>
         {data.map(
           (deal, idx) =>
+            // Show all in My Deals, but only deals under "Auction" in Deal Market
             (isMyDeals || (!isMyDeals && deal.status === "Auction")) && (
               <DealCard isMyDeals={isMyDeals} idx={idx} deal={deal} key={idx} />
             )

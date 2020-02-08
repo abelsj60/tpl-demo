@@ -254,7 +254,7 @@ export default function Deal(props) {
                   <DealItem
                     grow
                     bottomMargin={true}
-                    key={idx}
+                    key={`b-${idx}`}
                     label={data.label}
                     text={data.text}
                   />
