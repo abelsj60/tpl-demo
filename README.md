@@ -39,15 +39,6 @@ The development server should be running here once you start up:
 http://localhost:1234/
 ```
 
-## Lint & Beautify
-
-This project's linted and beautified via ESLint and Prettier. The configs are here:
-
-```
-ESLint: .eslintrc.json
-Prettier: .prettierrc
-```
-
 ## Code
 
 The app's entry point is here:
