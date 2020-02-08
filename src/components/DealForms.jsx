@@ -23,7 +23,7 @@ export default function DealForms(props) {
   const { id } = useParams();
   const { deals, setDeals, setMyDeals, setParties, parties, userId } = props;
   const location = useLocation();
-  let history = useHistory();
+  const history = useHistory();
   const formCategory = location.pathname.includes("new") ? "new" : "edit";
   const newDeals = cloneDeep(deals); // Keep it clean with clones.
   let newDeal,
@@ -117,7 +117,7 @@ export default function DealForms(props) {
     sic: sic
   });
   const handleFormChange = event => {
-    let value = event.target.value;
+    const value = event.target.value;
     const name = event.target.name;
 
     setForm({ ...formData, [name]: value });
