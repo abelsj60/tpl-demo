@@ -87,3 +87,10 @@ config.json
 
 (See enums.partyId for a list of preconfigured, index-sensitive userIds.)
 ```
+
+## Versions
+
+```
+.15 - 2/9/20 - form data bug corrected
+.1 - 2/7/20 - full demo app functional
+```
