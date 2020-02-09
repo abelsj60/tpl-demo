@@ -108,17 +108,14 @@ export default function DealForms(props) {
     here in a way that perverts the sequential order of hooks. 
     So, I've disabled the rule for the next line only. */
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [formData, setForm] = useState(
-    {
-      category: category,
-      jurisdiction: jurisdiction,
-      minimumBid: minimumBid,
-      litigationStatus: litigationStatus,
-      description: description,
-      sic: sic
-    },
-    [formData]
-  );
+  const [formData, setForm] = useState({
+    category: category,
+    jurisdiction: jurisdiction,
+    minimumBid: minimumBid,
+    litigationStatus: litigationStatus,
+    description: description,
+    sic: sic
+  });
   const handleFormChange = event => {
     const value = event.target.value;
     const name = event.target.name;
