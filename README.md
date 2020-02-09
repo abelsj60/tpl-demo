@@ -4,7 +4,7 @@
 
 This is a sample app of a marketplace for alternative investments. It consists of two main views:
 
-- A simple list of deals (all deals, and the user's deals).
+- Deal List. A list of all active deals and all user deals.
 - Deal Rooms. Every deal gets a deal room to transact business.
 
 Deal Rooms are context sensitive. Deal owners will see an "Accept" button, everyone else will see a "Bid" button.
